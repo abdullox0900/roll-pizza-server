@@ -1,13 +1,11 @@
-class Pizza {
-    constructor(id, name, description, price, imageUrl, categoryId, categoryName) {
-        this.id = id
-        this.name = name
-        this.description = description
-        this.price = price
-        this.imageUrl = imageUrl
-        this.categoryId = categoryId
-        this.categoryName = categoryName
-    }
-}
+const mongoose = require('mongoose')
 
-module.exports = Pizza
+const pizzaSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    imageUrl: { type: String },
+    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }
+})
+
+module.exports = mongoose.model('Pizza', pizzaSchema)

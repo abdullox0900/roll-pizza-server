@@ -1,24 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const multer = require('multer')
-const { v4: uuidv4 } = require('uuid')
-const path = require('path')
 const pizzaController = require('../controllers/pizzaController')
 const categoryController = require('../controllers/categoryController')
 const orderController = require('../controllers/orderController')
 
 // Multer konfiguratsiyasi
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/')
-    },
-    filename: (req, file, cb) => {
-        const uniqueFilename = `${uuidv4()}${path.extname(file.originalname)}`
-        cb(null, uniqueFilename)
-    }
-})
-
-const upload = multer({ storage: storage })
+const upload = multer({ storage: multer.memoryStorage() })
 
 router.get('/orders', orderController.getAllOrders)
 

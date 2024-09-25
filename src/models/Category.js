@@ -1,8 +1,7 @@
-class Category {
-    constructor(id, name) {
-        this.id = id
-        this.name = name
-    }
-}
+const mongoose = require('mongoose')
 
-module.exports = Category
+const categorySchema = new mongoose.Schema({
+    name: { type: String, required: true }
+})
+
+module.exports = mongoose.model('Category', categorySchema)
