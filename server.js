@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const cors = require('cors')
@@ -8,8 +9,7 @@ const webAppRoutes = require('./src/routes/webAppRoutes')
 const app = express()
 
 // MongoDB-ga ulanish
-const mongoURI = 'mongodb://localhost:27017/Roll-Pizza'
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB-ga muvaffaqiyatli ulandi'))
     .catch((err) => console.error('MongoDB-ga ulanishda xatolik:', err))
 
