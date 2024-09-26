@@ -1,19 +1,22 @@
 const User = require('../models/User')
 
-let users = []
-
-exports.getOrCreateUser = (telegramId) => {
-    let user = users.find(u => u.telegramId === telegramId)
+exports.getOrCreateUser = async (telegramId) => {
+    let user = await User.findOne({ telegramId })
     if (!user) {
-        user = new User(telegramId)
-        users.push(user)
+        user = new User({ telegramId, bonusGiven: true })
+        await user.save()
     }
     return user
 }
 
-exports.updateUserBonus = (telegramId, bonus) => {
-    const user = users.find(u => u.telegramId === telegramId)
-    if (user) {
-        user.bonus = bonus
-    }
+exports.updateUserBonus = async (userId, bonus) => {
+    await User.findByIdAndUpdate(userId, { bonus })
+}
+
+exports.getUserHistory = async (telegramId) => {
+    const user = await User.findOne({ telegramId }).populate({
+        path: 'orderHistory',
+        populate: { path: 'items.pizzaId' }
+    })
+    return user ? user.orderHistory : []
 }

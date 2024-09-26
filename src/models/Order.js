@@ -1,15 +1,19 @@
-class Order {
-    constructor(id, userId, items, totalPrice, name, phone, address, usedBonus, date) {
-        this.id = id
-        this.userId = userId
-        this.items = items
-        this.totalPrice = totalPrice
-        this.name = name
-        this.phone = phone
-        this.address = address
-        this.usedBonus = usedBonus
-        this.date = date
-    }
-}
+const mongoose = require('mongoose')
 
-module.exports = Order
+const orderSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    items: [{
+        pizzaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Pizza' },
+        name: { type: String, required: true },
+        imageUrl: { type: String },
+        quantity: Number
+    }],
+    totalPrice: { type: Number, required: true },
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    address: { type: String, required: true },
+    usedBonus: { type: Number, default: 0 },
+    date: { type: Date, default: Date.now }
+})
+
+module.exports = mongoose.model('Order', orderSchema)

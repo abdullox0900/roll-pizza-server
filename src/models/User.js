@@ -1,8 +1,10 @@
-class User {
-    constructor(telegramId, bonus = 500) {
-        this.telegramId = telegramId
-        this.bonus = bonus
-    }
-}
+const mongoose = require('mongoose')
 
-module.exports = User
+const userSchema = new mongoose.Schema({
+    telegramId: { type: String, required: true, unique: true },
+    bonus: { type: Number, default: 500 },
+    bonusGiven: { type: Boolean, default: false },
+    orderHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
+})
+
+module.exports = mongoose.model('User', userSchema)
