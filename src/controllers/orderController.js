@@ -1,6 +1,7 @@
 const Order = require('../models/Order')
 const User = require('../models/User')
 const Pizza = require('../models/Pizza')
+const userController = require('./userController')
 
 exports.createOrder = async (req, res) => {
     try {
@@ -37,8 +38,11 @@ exports.createOrder = async (req, res) => {
 
         await newOrder.save()
 
-        // Update user's bonus
-        user.bonus = user.bonus - usedBonus + Math.floor(totalPrice * 0.1)  // 10% cashback
+        // Agar bonus ishlatilgan bo'lsa, uni 0 ga tushuramiz
+        if (usedBonus > 0) {
+            await userController.updateUserBonus(user._id, usedBonus)
+        }
+
         user.orderHistory.push(newOrder._id)
         await user.save()
 
